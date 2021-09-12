@@ -152,7 +152,7 @@ header{
     left: 0;
     width:inherit;
     height: 100vh;
-    background-image: url("../images/bg-pat.png");
+    background: url("../images/bg-pat.png"), #3a3a3a;
     opacity: 0.4;
     z-index: -1;
 }
