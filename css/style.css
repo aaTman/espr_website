@@ -1,5 +1,15 @@
 /* Base */
 
+@font-face {
+    font-family: "rabbid";
+    src: url("fonts/RabbidHighwaySignII.otf");
+}
+
+@font-face {
+    font-family: "outfit";
+    src: url("fonts/Outfit-VariableFont_wght.ttf");
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -12,7 +22,7 @@ html{
 
 body{
     font-size: 1.6rem;
-    font-family: "Montserrat", sans-serif;
+    font-family: "outfit";
 }
 
 a{
@@ -69,7 +79,7 @@ header{
 }
 
 .nav-link{
-    font-size: 1.4rem;
+    font-size: 2rem;
     text-transform: uppercase;
     color: #fff;
     transition: opacity .2s;
@@ -81,7 +91,7 @@ header{
 
 .logo{
     display: block;
-    width: 12rem;
+    width: 18rem;
 
 }
 
@@ -96,7 +106,7 @@ header{
 .landing-page{
     width: 100%;
     min-height: 100vh;
-    background-image: linear-gradient(to bottom right, #3B4679, #2B3153);
+    background-image: linear-gradient(to bottom right, #e2bfe1, #3368a9);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -152,8 +162,10 @@ header{
     left: 0;
     width:inherit;
     height: 100vh;
-    background: url("../images/bg-pat.png"), #3a3a3a;
+    background: url("../images/bg-squares.png"), #3a3a3a;
     opacity: 0.4;
+    background-repeat: no-repeat;
+    background-position:center;
     z-index: -1;
 }
 
@@ -191,18 +203,20 @@ header{
 
 .search-bar{
     width: calc(100% - .5rem);
+    font-family: "outfit";
 }
 
 .search-button{
     width: 10rem;
-    background-image: linear-gradient(to right, #FF83D5, #FFCCB0);
+    background-image: linear-gradient(to right, #e2bfe1, #3368a9);
     color: #fff;
     cursor: pointer;
     margin-left: -10rem;
+    font-family: "outfit";
 }
 
 .search-button:hover{
-    background-image: linear-gradient(to right, #ff62cb, #fdb892);
+    background-image: linear-gradient(to right, #e2cee1, #4d77ab);
 }
 
 .sm-list{
