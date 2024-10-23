@@ -9,60 +9,23 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <script type="text/javascript" src="js/core.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 </head>
 <body>
-    <header>
-        <div class="header-container" id="header-container">
-            <nav class="nav" id="nav">
-                <a href="index.html" class="logo">
-                    <img src="./images/espr_2024.png" alt="" class="logo">
-                </a>    
-                <ul class="nav-list" id="navlist">
-                    <li class="nav-item">
-                        <a href="about.html" class="nav-link">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="core.html" class="nav-link">ESPR Core</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="Change in water balance comparing 1,5°C and 3°C.htm" class="nav-link">Demo</a>
-                    </li>
+<!--Navigation bar-->
+<div id="nav-placeholder">
 
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Blog</a>
-                    </li>
-                </ul>
-                <a href="javascript:void(0)" class="icon" id="icon" onclick="openNav()">
-                    <i class="fas fa-water before"></i>
-                    <i class="fas fa-times after"></i>
-                </a>
-                
+</div>
 
-            </nav>
-        </div>
-    </header>
+<script>
+$(function(){
+  $("#nav-placeholder").load("nav.html");
+});
+</script>
+<!--end of Navigation bar-->
 <section class="landing-page" id="landingpage">
 
-    <div class="mobilenav" id="mobilenav"> 
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <ul class="mobile-nav-list" id="mobilenavlist">
-            <li class="mobile-nav-item">
-                <a href="#" class="nav-link">About</a>
-            </li>
-            <li class="mobile-nav-item">
-                <a href="#" class="nav-link">ESPR Core</a>
-            </li>
-            <li class="mobile-nav-item">
-                <a href="#" class="nav-link">Demo</a>
-            </li>
-            <li class="mobile-nav-item">
-                <a href="#" class="nav-link">Blog</a>
-            </li>
-        </ul>
-        
-
-    </div>
 
     <div class="container">
         <div class="content">
@@ -80,10 +43,6 @@
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                 </div>
-            </div>
-            <div class="image-group">
-
-
             </div>
         </div>
     </div>

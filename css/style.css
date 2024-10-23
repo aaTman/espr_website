@@ -106,7 +106,7 @@ header{
 .landing-page{
     width: 100%;
     min-height: 100vh;
-    background-image: linear-gradient(to bottom right, #e2bfe1, #3368a9);
+    background-image: linear-gradient(to bottom right, #4a454a, #0072aa);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -114,6 +114,93 @@ header{
     z-index: 9;
 }
 
+.blog-page{
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, #4a454a, #0072aa);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: 9;
+}
+/* About Page */
+.about-page {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, #4a454a, #0072aa);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: 9;
+}
+
+.about-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: 100vh;
+    background: url("../images/bg-squares.png"), #3a3a3a;
+    opacity: 0.4;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
+}
+
+/* Services Page */
+.services-page {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, #4a454a, #0072aa);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: 9;
+}
+
+.services-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: 100vh;
+    background: url("../images/bg-squares.png"), #3a3a3a;
+    opacity: 0.4;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
+}
+
+/* Contact Page */
+.contact-page {
+    width: 100%;
+    min-height: 100vh;
+    background-image: linear-gradient(to bottom right, #4a454a, #0072aa);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    z-index: 9;
+}
+
+.contact-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: 100vh;
+    background: url("../images/bg-squares.png"), #3a3a3a;
+    opacity: 0.4;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
+}
 .mobilenav{
     height: 100%;
     width: 0;
@@ -208,7 +295,7 @@ header{
 
 .search-button{
     width: 10rem;
-    background-image: linear-gradient(to right, #e2bfe1, #3368a9);
+    background-image: linear-gradient(to right, #1a69b7, #0047ab);
     color: #fff;
     cursor: pointer;
     margin-left: -10rem;
@@ -216,7 +303,7 @@ header{
 }
 
 .search-button:hover{
-    background-image: linear-gradient(to right, #e2cee1, #4d77ab);
+    background-image: linear-gradient(to right, #2181e0, #005bda);
 }
 
 .sm-list{
