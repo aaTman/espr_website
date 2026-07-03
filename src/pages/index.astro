@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NebulaHero from '../components/NebulaHero.astro';
+
+const experiments = (await getCollection('experiments'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 4);
+
+// link logic per HANDOFF.md: detail page if demoEmbed or body notes,
+// else external demo, else repo
+const expHref = (e: (typeof experiments)[number]) => {
+  if (e.data.demoEmbed || (e.body && e.body.trim().length > 0)) return `/experiments/${e.id}/`;
+  if (e.data.demoUrl) return e.data.demoUrl;
+  return e.data.repoUrl ?? `/experiments/${e.id}/`;
+};
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<BaseLayout overlayNav>
+  <NebulaHero>
+    <h1>Machine learning for<br />extreme weather.</h1>
+    <p>
+      Deep learning systems that read the atmosphere, and open tools
+      for the people who depend on them.
+    </p>
+  </NebulaHero>
+
+  <section id="work">
+    <div class="wrap">
+      <p class="label">Work</p>
+      <div class="rows">
+        {experiments.map((e) => (
+          <a class="row" href={expHref(e)}>
+            <span class="title">{e.data.title}</span>
+            <span class="meta">
+              {[e.data.demoEmbed || e.data.demoUrl ? 'Live demo' : null, ...e.data.tags.slice(0, 2)]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="wrap">
+      <p class="label">Writing</p>
+      <div class="rows">
+        {posts.map((p) => (
+          <a class="row post-row" href={`/blog/${p.id}/`}>
+            <span class="date">{fmt(p.data.date)}</span>
+            <span class="title">{p.data.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <p class="label">About</p>
+      <p class="about-blurb">
+        I train deep learning models to find weather fronts in reanalysis data,
+        and build open-source tools for extreme weather prediction with the
+        Extreme Earth Foundation and the OU IDEA Lab.
+        <a href="/about/">More →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-blurb {
+    margin: 0;
+    font-size: clamp(18px, 2vw, 23px);
+    line-height: 1.55;
+    max-width: 34em;
+  }
+  .about-blurb a { color: var(--rose); white-space: nowrap; }
+  .about-blurb a:hover { color: var(--ember); }
+</style>

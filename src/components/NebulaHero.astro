@@ -1,0 +1,245 @@
+---
+/*
+  The hero: a painted nebula-cloud bank on black.
+  Everything is static SVG — the organic edges come from
+  feTurbulence + feDisplacementMap, rendered once by the browser.
+  The starfield is generated at build time (seeded), so the page
+  ships zero JavaScript.
+*/
+let rng = 7331;
+const rand = () => (rng = (rng * 16807) % 2147483647) / 2147483647;
+const stars = Array.from({ length: 150 }, () => ({
+  x: +(rand() * 1600).toFixed(1),
+  y: +(rand() * 900).toFixed(1),
+  r: +(0.5 + rand() * 1.1).toFixed(2),
+  o: +(0.12 + rand() * 0.55).toFixed(2),
+}));
+---
+
+<header class="hero">
+  <svg
+    class="scene"
+    viewBox="0 0 1600 900"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
+    <defs>
+      <!-- soft ambient haze -->
+      <filter id="haze" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="55" />
+      </filter>
+      <!-- ONE shared displacement field for the whole cloud, light blur -->
+      <filter id="cloud" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.009 0.015" numOctaves="4" seed="11" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="130" />
+        <feGaussianBlur stdDeviation="2.2" />
+      </filter>
+      <!-- fine cauliflower texture for the sunlit tops -->
+      <filter id="texture" x="-30%" y="-30%" width="160%" height="160%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="5" seed="4" result="n" />
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="60" />
+        <feGaussianBlur stdDeviation="1" />
+      </filter>
+      <radialGradient id="speckHalo">
+        <stop offset="0%" stop-color="#FFF3E6" stop-opacity="0.45" />
+        <stop offset="45%" stop-color="#FFE0D0" stop-opacity="0.14" />
+        <stop offset="100%" stop-color="#FFE0D0" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gShadow">
+        <stop offset="0%" stop-color="#2E2650" stop-opacity="1" />
+        <stop offset="55%" stop-color="#2E2650" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#2E2650" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gPurple">
+        <stop offset="0%" stop-color="#5E4B85" stop-opacity="1" />
+        <stop offset="55%" stop-color="#5E4B85" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#5E4B85" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gDeepBlue">
+        <stop offset="0%" stop-color="#39466F" stop-opacity="1" />
+        <stop offset="55%" stop-color="#39466F" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#39466F" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gBlue">
+        <stop offset="0%" stop-color="#7C93C4" stop-opacity="1" />
+        <stop offset="55%" stop-color="#7C93C4" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#7C93C4" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gDeepGreen">
+        <stop offset="0%" stop-color="#47806F" stop-opacity="1" />
+        <stop offset="55%" stop-color="#47806F" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#47806F" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gGreen">
+        <stop offset="0%" stop-color="#7FBFAE" stop-opacity="1" />
+        <stop offset="55%" stop-color="#7FBFAE" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#7FBFAE" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gMauve">
+        <stop offset="0%" stop-color="#A583B8" stop-opacity="1" />
+        <stop offset="55%" stop-color="#A583B8" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#A583B8" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gRose">
+        <stop offset="0%" stop-color="#E3A8B8" stop-opacity="1" />
+        <stop offset="55%" stop-color="#E3A8B8" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#E3A8B8" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gCream">
+        <stop offset="0%" stop-color="#F5E6D4" stop-opacity="1" />
+        <stop offset="55%" stop-color="#F5E6D4" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#F5E6D4" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gBright">
+        <stop offset="0%" stop-color="#FDF6E9" stop-opacity="1" />
+        <stop offset="55%" stop-color="#FDF6E9" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#FDF6E9" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gCobalt">
+        <stop offset="0%" stop-color="#0047AB" stop-opacity="1" />
+        <stop offset="55%" stop-color="#0047AB" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#0047AB" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gSky">
+        <stop offset="0%" stop-color="#6EB9FF" stop-opacity="1" />
+        <stop offset="55%" stop-color="#6EB9FF" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#6EB9FF" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gTeal">
+        <stop offset="0%" stop-color="#3FA98F" stop-opacity="1" />
+        <stop offset="55%" stop-color="#3FA98F" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#3FA98F" stop-opacity="0" />
+      </radialGradient>
+      <radialGradient id="gCrimson">
+        <stop offset="0%" stop-color="#C0333F" stop-opacity="1" />
+        <stop offset="55%" stop-color="#C0333F" stop-opacity="0.55" />
+        <stop offset="100%" stop-color="#C0333F" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    <!-- starfield -->
+    <g>
+      {stars.map((s) => (
+        <circle cx={s.x} cy={s.y} r={s.r} fill="#E8E6EE" opacity={s.o} />
+      ))}
+    </g>
+
+    <!-- ambient glow: warm core, cold blue left, sea-green right -->
+    <g filter="url(#haze)">
+      <ellipse cx="780" cy="500" rx="620" ry="190" fill="#E7BFC2" opacity="0.22" />
+      <ellipse cx="300" cy="530" rx="400" ry="160" fill="#0047AB" opacity="0.16" />
+      <ellipse cx="420" cy="560" rx="300" ry="130" fill="#33406E" opacity="0.18" />
+      <ellipse cx="1330" cy="520" rx="340" ry="150" fill="#3FA98F" opacity="0.15" />
+      <ellipse cx="1530" cy="470" rx="150" ry="230" fill="#9FB3C8" opacity="0.10" />
+    </g>
+
+    <!-- the cloud bank: gradient-filled masses, one coherent noise field -->
+    <g filter="url(#cloud)">
+      <ellipse cx="650" cy="625" rx="400" ry="110" fill="url(#gShadow)" opacity="0.7" />
+      <ellipse cx="1150" cy="620" rx="320" ry="95" fill="url(#gShadow)" opacity="0.6" />
+      <ellipse cx="420" cy="570" rx="300" ry="120" fill="url(#gPurple)" opacity="0.7" />
+      <ellipse cx="760" cy="575" rx="340" ry="130" fill="url(#gPurple)" opacity="0.75" />
+      <ellipse cx="1120" cy="555" rx="320" ry="140" fill="url(#gPurple)" opacity="0.7" />
+      <ellipse cx="1360" cy="560" rx="240" ry="110" fill="url(#gPurple)" opacity="0.55" />
+      <ellipse cx="150" cy="600" rx="220" ry="80" fill="url(#gDeepBlue)" opacity="0.55" />
+      <ellipse cx="300" cy="545" rx="240" ry="90" fill="url(#gBlue)" opacity="0.55" />
+      <ellipse cx="180" cy="575" rx="200" ry="70" fill="url(#gBlue)" opacity="0.5" />
+      <ellipse cx="430" cy="555" rx="180" ry="75" fill="url(#gBlue)" opacity="0.4" />
+      <ellipse cx="90" cy="560" rx="180" ry="70" fill="url(#gCobalt)" opacity="0.5" />
+      <ellipse cx="360" cy="585" rx="260" ry="95" fill="url(#gCobalt)" opacity="0.55" />
+      <ellipse cx="620" cy="590" rx="220" ry="80" fill="url(#gCobalt)" opacity="0.4" />
+      <ellipse cx="240" cy="500" rx="130" ry="45" fill="url(#gSky)" opacity="0.35" />
+      <ellipse cx="330" cy="520" rx="180" ry="60" fill="url(#gSky)" opacity="0.4" />
+      <ellipse cx="500" cy="540" rx="150" ry="55" fill="url(#gSky)" opacity="0.3" />
+      <ellipse cx="1370" cy="595" rx="200" ry="70" fill="url(#gDeepGreen)" opacity="0.45" />
+      <ellipse cx="1400" cy="530" rx="220" ry="85" fill="url(#gGreen)" opacity="0.5" />
+      <ellipse cx="1480" cy="570" rx="170" ry="70" fill="url(#gGreen)" opacity="0.45" />
+      <ellipse cx="1310" cy="555" rx="160" ry="70" fill="url(#gGreen)" opacity="0.4" />
+      <ellipse cx="1520" cy="510" rx="150" ry="60" fill="url(#gTeal)" opacity="0.4" />
+      <ellipse cx="1240" cy="530" rx="200" ry="80" fill="url(#gTeal)" opacity="0.45" />
+      <ellipse cx="1100" cy="560" rx="170" ry="65" fill="url(#gTeal)" opacity="0.3" />
+      <ellipse cx="560" cy="530" rx="240" ry="100" fill="url(#gMauve)" opacity="0.6" />
+      <ellipse cx="900" cy="520" rx="260" ry="110" fill="url(#gMauve)" opacity="0.6" />
+      <ellipse cx="1200" cy="510" rx="220" ry="105" fill="url(#gMauve)" opacity="0.55" />
+      <ellipse cx="1060" cy="430" rx="200" ry="140" fill="url(#gMauve)" opacity="0.6" />
+      <ellipse cx="700" cy="505" rx="240" ry="95" fill="url(#gRose)" opacity="0.65" />
+      <ellipse cx="950" cy="480" rx="220" ry="100" fill="url(#gRose)" opacity="0.65" />
+      <ellipse cx="1120" cy="420" rx="170" ry="110" fill="url(#gRose)" opacity="0.6" />
+      <ellipse cx="460" cy="545" rx="160" ry="70" fill="url(#gRose)" opacity="0.5" />
+      <ellipse cx="1250" cy="470" rx="150" ry="85" fill="url(#gRose)" opacity="0.5" />
+      <ellipse cx="1010" cy="330" rx="95" ry="60" fill="url(#gCrimson)" opacity="0.22" />
+      <ellipse cx="1030" cy="300" rx="60" ry="38" fill="url(#gCrimson)" opacity="0.45" />
+      <ellipse cx="820" cy="470" rx="190" ry="75" fill="url(#gCream)" opacity="0.75" />
+      <ellipse cx="960" cy="445" rx="160" ry="70" fill="url(#gCream)" opacity="0.7" />
+      <ellipse cx="1070" cy="350" rx="140" ry="95" fill="url(#gCream)" opacity="0.75" />
+      <ellipse cx="1160" cy="420" rx="120" ry="70" fill="url(#gCream)" opacity="0.6" />
+      <ellipse cx="650" cy="490" rx="130" ry="55" fill="url(#gCream)" opacity="0.55" />
+      <ellipse cx="890" cy="415" rx="110" ry="55" fill="url(#gCream)" opacity="0.6" />
+      <ellipse cx="880" cy="470" rx="120" ry="48" fill="url(#gBright)" opacity="0.8" />
+      <ellipse cx="1050" cy="370" rx="90" ry="60" fill="url(#gBright)" opacity="0.8" />
+      <ellipse cx="1000" cy="320" rx="70" ry="45" fill="url(#gBright)" opacity="0.7" />
+    </g>
+
+    <!-- crisper sunlit detail on top -->
+    <g filter="url(#texture)">
+      <ellipse cx="1065" cy="345" rx="120" ry="80" fill="url(#gCream)" opacity="0.4" />
+      <ellipse cx="835" cy="462" rx="150" ry="60" fill="url(#gCream)" opacity="0.35" />
+      <ellipse cx="940" cy="430" rx="100" ry="50" fill="url(#gBright)" opacity="0.35" />
+      <ellipse cx="1130" cy="405" rx="110" ry="65" fill="url(#gRose)" opacity="0.3" />
+      <ellipse cx="380" cy="530" rx="140" ry="50" fill="url(#gSky)" opacity="0.3" />
+      <ellipse cx="1290" cy="510" rx="130" ry="55" fill="url(#gTeal)" opacity="0.3" />
+    </g>
+
+    <!-- the speck: something small crossing something vast -->
+    <circle cx="905" cy="468" r="22" fill="url(#speckHalo)" />
+    <circle cx="905" cy="468" r="3.5" fill="#0D0D16" />
+  </svg>
+
+  <div class="wrap hero-text">
+    <slot />
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 640px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  /* film grain */
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-text {
+    position: relative;
+    z-index: 1;
+    padding-bottom: clamp(48px, 9vh, 110px);
+  }
+  .hero-text :global(h1) {
+    margin: 0;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-size: clamp(34px, 5vw, 58px);
+  }
+  .hero-text :global(p) {
+    margin: 14px 0 0;
+    font-size: clamp(17px, 1.8vw, 21px);
+    color: var(--muted);
+    max-width: 44ch;
+  }
+</style>

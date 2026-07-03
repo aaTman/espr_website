@@ -1,0 +1,23 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: Date;
+  current?: string;
+}
+const { title, description, date, current } = Astro.props;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<BaseLayout title={`${title} — espr.ai`} description={description} current={current}>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>{title}</h1>
+      {date && <span class="date mono">{fmt(date)}</span>}
+    </div>
+    <article class="prose">
+      <slot />
+    </article>
+  </div>
+</BaseLayout>

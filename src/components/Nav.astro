@@ -1,0 +1,17 @@
+---
+interface Props {
+  overlay?: boolean;      // true on the landing page (nav floats over the hero)
+  current?: string;       // 'work' | 'writing' | 'about'
+}
+const { overlay = false, current } = Astro.props;
+---
+<nav class:list={['site-nav', { solid: !overlay }]}>
+  <div class="wrap nav-inner">
+    <a class="home" href="/">Taylor Mandelbaum</a>
+    <div class="nav-links">
+      <a href="/experiments/" aria-current={current === 'work' ? 'page' : undefined}>Work</a>
+      <a href="/blog/" aria-current={current === 'writing' ? 'page' : undefined}>Writing</a>
+      <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+    </div>
+  </div>
+</nav>

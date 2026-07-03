@@ -1,0 +1,7 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+import { Content, frontmatter } from '../content/about.md';
+---
+<ProseLayout title={frontmatter.title} description={frontmatter.description} current="about">
+  <Content />
+</ProseLayout>
