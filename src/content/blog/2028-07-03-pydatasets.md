@@ -1,13 +1,16 @@
 ---
 title: "PyDatasets for Icechunk and Keras on an HPC"
+subtitle: "Speeding up model training while keeping metadata intact"
 date: 2026-07-03
 description: "A post detailing how to use PyDataset with Icechunk data, both populated and a virtual store."
 tags: ["icechunk", "zarr", "keras", "machine learning", "geospatial", "tensors"]
 ---
 
+</br>
+
 I've been utilizing the University of Oklahoma supercomputer, soon-to-be called Sooner (previously called Schooner) to update [FrontFinder](https://doi.org/10.1175/AIES-D-24-0043.1) (Justin et al. 2025) for NOAA. The model is *really cool*, with the ability to probabilistically infer where cold, warm, stationary, and occluded fronts are along with drylines. 
 
-![FrontFinder output for the 2023 Christmas winter storm in the eastern US](/src/assets/blog/frontfinder_example.png "FrontFinder output for the 2023 Christmas winter storm in the eastern US, Figure 14 in the paper")  
+![FrontFinder output for the 2023 Christmas winter storm in the eastern US](../../assets/blog/frontfinder_example.png 'FrontFinder output for the 2023 Christmas winter storm in the eastern US, Figure 14 in the paper')  
 
 I stuck with TensorFlow/Keras as that was what this model was built with. Despite TF's less-than-stellar documentation (and Keras' as well, surprisingly), I was able to figure out a fairly quick pipeline to feed data from their native location in Icechunk stores to a `PyDataset`.
 
@@ -275,7 +278,7 @@ def __getitem__(self, idx: int) -> tuple[np.ndarray, np.ndarray]:
     return result
 ```
 
-Where the actual indices, using `batch_size`, are computed using the TensorFlow internals. I added a warning logger if the subsetting takes more than 30 seconds (it normally does, but is not a significant slowdown for training the model). One slowdown here is dilating the front labels by one pixel in each direction in the current model version; an experiment I'm working on addresses this elsewhere instead of requiring a call to a `scipy` function over and over again. 
+Where the actual indices, using `batch_size`, are computed using the TensorFlow internals. I added a warning logger if the subsetting takes more than 30 seconds (it normally does).
 
 I use this child class downstream in `train.py` using `load_data_into_dataloader()`, a function I call once each for train and validation datasets:
 
@@ -390,7 +393,14 @@ def load_data_into_dataloader(
 
 The outcome of this resulted in training that took right under 28 hours using a `MirroredStrategy` on 4 A100's on ~4TB of training data for a UNet3+.
 
+![Heidke Skill Score (HSS) metric for shuffled and likely unshuffled dataset](../../assets/blog/hss_shuffle_vs_not.png 'Heidke Skill Score by step for the shuffled dataset (green) and the "shuffled" dataset without shuffle=True explicitly declared in the PyDataset. Dashed lines are validation HSS')  
 
-![Heidke Skill Score (HSS) metric for shuffled and likely unshuffled dataset](/src/assets/blog/hss_shuffle_vs_not.png "Heidke Skill Score by step for the shuffled dataset (green) and the "shuffled" dataset without shuffle=True explicitly declared in the PyDataset. Dashed lines are validation HSS")  
+There was a clear enough difference with the `shuffle` conundrum that I opted to keep `shuffle=True` in the `FrontsPyDataset` call.
 
-![FrontFinder output for the 2023 Christmas winter storm in the eastern US](/src/assets/blog/frontfinder_example.png "FrontFinder output for the 2023 Christmas winter storm in the eastern US, Figure 14 in the paper")  
+There's still significant room for improvement, as the TFRecord method took ~2 seconds per step compared to the `PyDataset` method at ~5 seconds per step. The key benefit to this approach is the datasets and code are all version controlled. The data is stored with ACID transactions (so long as I don't delete the store itself). 
+
+I set the maximum workers to 16, any more seemed to hammer the disk a bit too hard with concurrent requests combining multithreading via Icechunk and Tensorflow simultaneously. 
+
+Moving forward, I'm going to address one likely slowdown immediately: dilating the front labels by one pixel in each direction in the current model version. Dilating the fronts both accounts for label errors and also improves the model training. An experiment I'm working on applies an indirect dilation in the loss function instead of requiring a call to a `scipy` function over and over again. 
+
+Another possible speedup is swapping stores. The store the data lies on is a *slow* Ceph-based filesystem. There's a possible speedup in storing the data temporarily in the HPC's `scratch/` store, but would require one large transfer prior to training.

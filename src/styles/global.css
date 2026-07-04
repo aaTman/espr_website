@@ -130,6 +130,13 @@ section { padding: clamp(70px, 12vh, 130px) 0 0; scroll-margin-top: 40px; }
   font-family: inherit;
 }
 .page-head .date { display: block; margin-top: 12px; font-family: inherit; }
+.page-head .subtitle {
+  margin: 10px 0 0;
+  font-size: clamp(16px, 2vw, 19px);
+  color: var(--muted);
+  line-height: 1.45;
+  font-family: inherit;
+}
 
 /* ---- footer ---- */
 footer { padding: clamp(80px, 14vh, 150px) 0 40px; }
@@ -172,7 +179,13 @@ footer { padding: clamp(80px, 14vh, 150px) 0 40px; }
 }
 .prose pre { border: 1px solid var(--hairline); border-radius: 8px; padding: 18px 20px; overflow-x: auto; margin: 0 0 22px; }
 .prose pre code { background: none; border: none; padding: 0; }
-.prose img { max-width: 100%; border-radius: 8px; }
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
 .prose table { border-collapse: collapse; margin: 0 0 22px; }
 .prose th, .prose td { border: 1px solid var(--hairline); padding: 8px 14px; font-size: 15px; }
 .prose hr { border: none; border-top: 1px solid var(--hairline); margin: 36px 0; }
