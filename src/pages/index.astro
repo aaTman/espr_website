@@ -28,24 +28,6 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
     </p>
   </NebulaHero>
 
-  <section id="work">
-    <div class="wrap">
-      <p class="label">Work</p>
-      <div class="rows">
-        {experiments.map((e) => (
-          <a class="row" href={expHref(e)}>
-            <span class="title">{e.data.title}</span>
-            <span class="meta">
-              {[e.data.demoEmbed || e.data.demoUrl ? 'Live demo' : null, ...e.data.tags.slice(0, 2)]
-                .filter(Boolean)
-                .join(' · ')}
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section id="writing">
     <div class="wrap">
       <p class="label">Writing</p>
@@ -67,7 +49,8 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
         I train deep learning models to find weather fronts in reanalysis data,
         and build open-source tools for extreme weather prediction with the
         Extreme Earth Foundation and the OU IDEA Lab.
-        <a href="/about/">More →</a>
+
+        <a href="/about/"> More →</a>
       </p>
     </div>
   </section>
