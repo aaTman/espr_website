@@ -36,7 +36,7 @@ It was also fundamental to use the Icechunk backend to manage the flow, avoiding
 
 What differentiates a `PyDataset` from a `tf.data.Dataset` is that the data preprocessing can (should) occur inside the `PyDataset` instance. Both have poor documentation.
 
-See the [Keras documentation](https://keras.io/api/utils/preprocessing_utils/#pydataset-class) versus the [TensorFlow documentation](https://www.tensorflow.org/api_docs/python/tf/keras/utils/PyDataset). The TF documentation is clearly better, but you'd also miss out on some important notes if you didn't look through the Keras documentation, such as the ability to use `on_epoch_begin` as well as `on_epoch_end`, or:
+See the [Keras documentation](https://keras.io/api/utils/preprocessing_utils/#pydataset-class) versus the [TensorFlow documentation](https://www.tensorflow.org/api_docs/python/tf/keras/utils/PyDataset) for `PyDataset`. The TF documentation is clearly better, but you'd also miss out on some important notes if you didn't look through the Keras documentation, such as the ability to use `on_epoch_begin` as well as `on_epoch_end`, or:
 
 > keras.utils.PyDataset is a utility that you can subclass to obtain > a Python generator with two important properties:
 > * It works well with multiprocessing.
