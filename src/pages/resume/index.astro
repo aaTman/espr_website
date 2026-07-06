@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const experiments = (await getCollection('experiments'))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const expHref = (e: (typeof experiments)[number]) => {
+  if (e.data.demoEmbed || (e.body && e.body.trim().length > 0)) return `/experiments/${e.id}/`;
+  if (e.data.demoUrl) return e.data.demoUrl;
+  return e.data.repoUrl ?? `/experiments/${e.id}/`;
+};
+---
+<BaseLayout title="Resume/CV — espr.ai" current="work">
+  <div class="wrap">
+    <div class="page-head"><h1>Resume/CV</h1></div>
+    <section style="padding-top: 44px;">
+      <div class="rows">
+        {experiments.map((e) => (
+          <a class="row" href={expHref(e)}>
+            <span class="title">{e.data.title}</span>
+            <span class="meta">
+              {[e.data.demoEmbed || e.data.demoUrl ? 'Live demo' : null, ...e.data.tags.slice(0, 2)]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

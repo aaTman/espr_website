@@ -3,12 +3,8 @@ title: "About"
 description: "Taylor Mandelbaum — machine learning for extreme weather."
 ---
 
-I train deep learning models to find weather fronts in reanalysis data,
-and build open-source tools for extreme weather prediction with the
-[Extreme Earth Foundation](https://extremeearth.org) and the OU IDEA Lab.
+I'm a co-founder of
+[Extreme Earth](https://extremeearth.org) where we tackle the bleeding edge of Earth system AI with trustworthy and explainable outputs to solve critical problems, for the greater good. I'm a Swiss-army knife, working currently on optimizing [FrontFinder](https://journals.ametsoc.org/view/journals/aies/4/1/AIES-D-24-0043.1.xml?tab_body=pdf), a UNet that provides probabilistic information on baroclinic boundaries. I am also the developer of [ExtremeWeatherBench](https://github.com/brightbandtech/ExtremeWeatherBench/), a flexible benchmarking tool for numerical weather models.
 
-This site is my workshop — experiments you can poke at, and notes on what
-broke and how it got fixed.
-
-You can read my [M.S. thesis](/Thesis.pdf), or find me on
-[GitHub](https://github.com/) and [Google Scholar](https://scholar.google.com/).
+You can find me on
+[GitHub](https://github.com/aaTman).
