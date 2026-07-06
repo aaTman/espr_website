@@ -27,7 +27,7 @@ const {
     <ClientRouter />
   </head>
   <body>
-    <Nav overlay={overlayNav} current={current} transition:persist />
+    <Nav overlay={overlayNav} current={current} client:load transition:persist />
     <slot />
     <footer>
       <div class="wrap foot">
