@@ -20,7 +20,19 @@ const { overlay = false, current } = Astro.props;
       <span></span>
     </button>
     <div class="nav-links" id="site-nav-menu">
-      <a href="https://fronts.espr.ai" aria-current={current === 'fronts' ? 'page' : undefined}>Fronts</a>
+      <div class="nav-dropdown">
+        <button
+          class="nav-dropdown-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-current={current === 'fronts' ? 'page' : undefined}
+        >
+          Projects
+        </button>
+        <div class="nav-dropdown-menu">
+          <a href="https://fronts.espr.ai" aria-current={current === 'fronts' ? 'page' : undefined}>Fronts</a>
+        </div>
+      </div>
       <a href="/about/" aria-current={current === 'about' ? 'page' : undefined}>About</a>
       <a href="/blog/" aria-current={current === 'writing' ? 'page' : undefined}>Writing</a>
       <a href="/resume/" aria-current={current === 'resume' ? 'page' : undefined}>Resume/CV</a>
@@ -66,5 +78,33 @@ const { overlay = false, current } = Astro.props;
     window.addEventListener('resize', () => {
       if (window.innerWidth > 760) closeMenu();
     });
+
+    const dropdown = nav.querySelector('.nav-dropdown');
+    const dropdownToggle = nav.querySelector('.nav-dropdown-toggle');
+
+    if (dropdown && dropdownToggle) {
+      const closeDropdown = () => {
+        dropdownToggle.setAttribute('aria-expanded', 'false');
+        dropdown.classList.remove('is-open');
+      };
+
+      dropdownToggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = dropdownToggle.getAttribute('aria-expanded') === 'true';
+
+        if (isOpen) {
+          closeDropdown();
+        } else {
+          dropdownToggle.setAttribute('aria-expanded', 'true');
+          dropdown.classList.add('is-open');
+        }
+      });
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!dropdown.contains(target)) closeDropdown();
+      });
+    }
   });
 </script>
