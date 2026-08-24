@@ -41,69 +41,55 @@ const { overlay = false, current } = Astro.props;
 </nav>
 
 <script>
-  const navs = document.querySelectorAll('.site-nav');
+  // Delegated on document/window (registered once) rather than bound to specific
+  // nav elements, because Astro's view-transition navigation swaps the nav's DOM
+  // and this module script does not re-run on subsequent navigations.
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
 
-  navs.forEach((nav) => {
-    const toggle = nav.querySelector('.nav-toggle');
-    const menu = nav.querySelector('.nav-links');
+    document.querySelectorAll('.site-nav').forEach((nav) => {
+      const toggle = nav.querySelector('.nav-toggle');
+      const menu = nav.querySelector('.nav-links');
+      const dropdown = nav.querySelector('.nav-dropdown');
+      const dropdownToggle = nav.querySelector('.nav-dropdown-toggle');
 
-    if (!toggle || !menu) return;
-
-    const closeMenu = () => {
-      toggle.setAttribute('aria-expanded', 'false');
-      menu.classList.remove('is-open');
-    };
-
-    toggle.addEventListener('click', () => {
-      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-
-      if (isOpen) {
-        closeMenu();
-      } else {
-        toggle.setAttribute('aria-expanded', 'true');
-        menu.classList.add('is-open');
+      if (dropdownToggle && target === dropdownToggle) {
+        const isOpen = dropdownToggle.getAttribute('aria-expanded') === 'true';
+        dropdownToggle.setAttribute('aria-expanded', String(!isOpen));
+        dropdown?.classList.toggle('is-open', !isOpen);
+        return;
       }
-    });
 
-    menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeMenu);
-    });
+      if (toggle && target === toggle) {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+        menu?.classList.toggle('is-open', !isOpen);
+        return;
+      }
 
-    document.addEventListener('click', (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      if (!nav.contains(target)) closeMenu();
-    });
+      if (toggle && menu) {
+        const clickedMenuLink = menu.contains(target) && target.closest('a');
+        if (!nav.contains(target) || clickedMenuLink) {
+          toggle.setAttribute('aria-expanded', 'false');
+          menu.classList.remove('is-open');
+        }
+      }
 
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 760) closeMenu();
-    });
-
-    const dropdown = nav.querySelector('.nav-dropdown');
-    const dropdownToggle = nav.querySelector('.nav-dropdown-toggle');
-
-    if (dropdown && dropdownToggle) {
-      const closeDropdown = () => {
+      if (dropdown && dropdownToggle && !dropdown.contains(target)) {
         dropdownToggle.setAttribute('aria-expanded', 'false');
         dropdown.classList.remove('is-open');
-      };
+      }
+    });
+  });
 
-      dropdownToggle.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const isOpen = dropdownToggle.getAttribute('aria-expanded') === 'true';
-
-        if (isOpen) {
-          closeDropdown();
-        } else {
-          dropdownToggle.setAttribute('aria-expanded', 'true');
-          dropdown.classList.add('is-open');
-        }
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 760) {
+      document.querySelectorAll('.site-nav .nav-toggle').forEach((toggle) => {
+        toggle.setAttribute('aria-expanded', 'false');
       });
-
-      document.addEventListener('click', (event) => {
-        const target = event.target;
-        if (!(target instanceof Element)) return;
-        if (!dropdown.contains(target)) closeDropdown();
+      document.querySelectorAll('.site-nav .nav-links').forEach((menu) => {
+        menu.classList.remove('is-open');
       });
     }
   });
