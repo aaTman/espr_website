@@ -93,6 +93,7 @@ a:hover { color: var(--rose); }
 }
 .nav-links {
   display: flex;
+  align-items: center;
   gap: clamp(12px, 3vw, 32px);
   flex-wrap: nowrap;
 }
@@ -107,9 +108,11 @@ a:hover { color: var(--rose); }
 .nav-dropdown-toggle {
   font: inherit;
   font-size: clamp(13px, 1.4vw, 14px);
+  line-height: inherit;
   color: var(--muted);
   background: none;
   border: none;
+  margin: 0;
   padding: 0;
   cursor: pointer;
   white-space: nowrap;
