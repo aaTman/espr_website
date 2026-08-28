@@ -7,8 +7,9 @@ interface Props {
   description?: string;
   date?: Date;
   current?: string;
+  wide?: boolean;
 }
-const { title, subtitle, description, date, current } = Astro.props;
+const { title, subtitle, description, date, current, wide = false } = Astro.props;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <BaseLayout title={`${title} — espr.ai`} description={description} current={current}>
@@ -18,7 +19,7 @@ const fmt = (d: Date) => d.toISOString().slice(0, 10);
       {subtitle && <p class="subtitle">{subtitle}</p>}
       {date && <span class="date mono">{fmt(date)}</span>}
     </div>
-    <article class="prose">
+    <article class:list={['prose', { wide }]}>
       <slot />
     </article>
   </div>

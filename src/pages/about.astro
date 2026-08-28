@@ -2,6 +2,11 @@
 import ProseLayout from '../layouts/ProseLayout.astro';
 import { Content, frontmatter } from '../content/about.md';
 ---
-<ProseLayout title={frontmatter.title} description={frontmatter.description} current="about">
-  <Content />
+<ProseLayout title={frontmatter.title} description={frontmatter.description} current="about" wide>
+  <div class="about-layout">
+    <div class="about-text">
+      <Content />
+    </div>
+    <img class="about-photo" src="/images/profile-pic.jpg" alt="Taylor Mandelbaum" width="480" height="640" />
+  </div>
 </ProseLayout>
