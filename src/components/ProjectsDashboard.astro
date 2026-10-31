@@ -1,0 +1,92 @@
+---
+import { projects, type Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+---
+<div class="dash">
+  <div class="dash-bar">
+    <div class="wrap dash-bar-inner">
+      <div class="dash-tabs" role="tablist" aria-label="Projects">
+        {projects.map((p) => (
+          <a
+            class="dash-tab"
+            href={`/projects/${p.slug}/`}
+            data-slug={p.slug}
+            role="tab"
+            aria-selected={p.slug === project.slug ? 'true' : 'false'}
+            aria-current={p.slug === project.slug ? 'page' : undefined}
+          >
+            {p.name}
+          </a>
+        ))}
+      </div>
+      <a class="dash-open small" href={project.url} target="_blank" rel="noopener">
+        Open {project.name} in new tab ↗
+      </a>
+    </div>
+  </div>
+
+  <div class="dash-stage">
+    {projects.map((p) => (
+      <iframe
+        class="dash-frame"
+        title={p.name}
+        data-slug={p.slug}
+        data-src={p.url}
+        src={p.slug === project.slug ? p.url : undefined}
+        hidden={p.slug !== project.slug}
+        allow="fullscreen"
+      ></iframe>
+    ))}
+  </div>
+</div>
+
+<script>
+  // Switch projects in place: iframes load lazily on first visit and stay alive
+  // afterwards, so flipping tabs doesn't lose each app's state. Links remain
+  // real URLs, so deep links and no-JS navigation work too.
+  function setupDash() {
+    const dash = document.querySelector<HTMLElement>('.dash');
+    if (!dash || dash.dataset.ready) return;
+    dash.dataset.ready = 'true';
+
+    const tabs = dash.querySelectorAll<HTMLAnchorElement>('.dash-tab');
+    const frames = dash.querySelectorAll<HTMLIFrameElement>('.dash-frame');
+    const open = dash.querySelector<HTMLAnchorElement>('.dash-open');
+
+    function show(slug: string) {
+      frames.forEach((f) => {
+        const active = f.dataset.slug === slug;
+        f.hidden = !active;
+        if (active) {
+          if (!f.getAttribute('src')) f.setAttribute('src', f.dataset.src ?? '');
+          if (open) {
+            open.href = f.dataset.src ?? '';
+            open.textContent = `Open ${f.title} in new tab ↗`;
+          }
+        }
+      });
+      tabs.forEach((t) => {
+        const active = t.dataset.slug === slug;
+        t.setAttribute('aria-selected', String(active));
+        if (active) t.setAttribute('aria-current', 'page');
+        else t.removeAttribute('aria-current');
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', (e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        const slug = tab.dataset.slug!;
+        history.replaceState(null, '', tab.getAttribute('href')!);
+        show(slug);
+      });
+    });
+  }
+  setupDash();
+  document.addEventListener('astro:page-load', setupDash);
+</script>
