@@ -3,6 +3,8 @@ export interface Project {
   name: string;
   blurb: string;
   url: string;
+  // Temporary: crop the app's own site nav until it hides it when embedded.
+  cropLegacyNav?: boolean;
 }
 
 export const projects: Project[] = [
@@ -17,5 +19,6 @@ export const projects: Project[] = [
     name: 'Spread Anomaly',
     blurb: 'Ensemble spread anomalies.',
     url: 'https://spreadanomaly.espr.ai',
+    cropLegacyNav: true,
   },
 ];
