@@ -36,6 +36,7 @@ const { project } = Astro.props;
         title={p.name}
         data-slug={p.slug}
         data-src={p.url}
+        data-crop={p.cropLegacyNav ? '' : undefined}
         src={p.slug === project.slug ? p.url : undefined}
         hidden={p.slug !== project.slug}
         allow="fullscreen"

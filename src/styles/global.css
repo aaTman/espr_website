@@ -122,6 +122,9 @@ a:hover { color: var(--rose); }
 .dash-stage { height: calc(100dvh - 160px); min-height: 480px; background: var(--black); }
 .dash-frame { display: block; width: 100%; height: 100%; border: 0; }
 .dash-frame[hidden] { display: none; }
+/* Spread Anomaly's own nav (42px + 2*clamp padding + 1px border) until it ships embedded mode. */
+.dash-stage { --legacy-nav: calc(43px + 2 * clamp(24px, 3.2vw, 34px)); overflow: hidden; }
+.dash-frame[data-crop] { margin-top: calc(-1 * var(--legacy-nav)); height: calc(100% + var(--legacy-nav)); }
 @media (max-width: 760px) { .dash-open { display: none; } }
 
 /* ---- section pattern: a label, a list, air ---- */
