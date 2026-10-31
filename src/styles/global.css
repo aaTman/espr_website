@@ -104,46 +104,25 @@ a:hover { color: var(--rose); }
 }
 .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--text); }
 
-.nav-dropdown { position: relative; }
-.nav-dropdown-toggle {
-  font: inherit;
-  font-size: clamp(13px, 1.4vw, 14px);
-  line-height: inherit;
-  color: var(--muted);
-  background: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  white-space: nowrap;
+/* ---- projects dashboard: persistent tab bar over an embedded app ---- */
+.dash-bar { border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.dash-bar-inner {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; padding-top: 0; padding-bottom: 0;
 }
-.nav-dropdown-toggle:hover,
-.nav-dropdown-toggle[aria-current="page"],
-.nav-dropdown-toggle[aria-expanded="true"] { color: var(--text); }
-.nav-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 14px;
-  min-width: 140px;
-  border: 1px solid var(--hairline);
-  border-radius: 14px;
-  background: rgba(7, 7, 12, 0.96);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  transform: translateY(-6px) scale(0.98);
-  pointer-events: none;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+.dash-tabs { display: flex; gap: clamp(18px, 3vw, 32px); overflow-x: auto; }
+.dash-tab {
+  padding: 14px 0 12px; font-size: 14px; color: var(--muted);
+  border-bottom: 2px solid transparent; white-space: nowrap;
 }
-.nav-dropdown.is-open .nav-dropdown-menu {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-.nav-dropdown-menu a { font-size: clamp(13px, 1.4vw, 14px); }
+.dash-tab:hover { color: var(--text); }
+.dash-tab[aria-selected="true"] { color: var(--text); border-bottom-color: var(--rose); }
+.dash-open { white-space: nowrap; }
+.dash-open:hover { color: var(--rose); }
+.dash-stage { height: calc(100dvh - 160px); min-height: 480px; background: var(--black); }
+.dash-frame { display: block; width: 100%; height: 100%; border: 0; }
+.dash-frame[hidden] { display: none; }
+@media (max-width: 760px) { .dash-open { display: none; } }
 
 /* ---- section pattern: a label, a list, air ---- */
 section { padding: clamp(70px, 12vh, 130px) 0 0; scroll-margin-top: 40px; }
