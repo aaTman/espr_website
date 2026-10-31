@@ -23,7 +23,7 @@ const { project } = Astro.props;
           </a>
         ))}
       </div>
-      <a class="dash-open small" href={project.url} target="_blank" rel="noopener">
+      <a class="dash-open small" href={`${project.url}?standalone=1`} target="_blank" rel="noopener">
         Open {project.name} in new tab ↗
       </a>
     </div>
@@ -65,7 +65,7 @@ const { project } = Astro.props;
         if (active) {
           if (!f.getAttribute('src')) f.setAttribute('src', f.dataset.src ?? '');
           if (open) {
-            open.href = f.dataset.src ?? '';
+            open.href = `${f.dataset.src}?standalone=1`;
             open.textContent = `Open ${f.title} in new tab ↗`;
           }
         }
