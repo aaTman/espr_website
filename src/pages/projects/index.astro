@@ -1,3 +1,10 @@
 ---
-return Astro.redirect('/projects/fronts/');
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectsDashboard from '../../components/ProjectsDashboard.astro';
+import { projects } from '../../data/projects';
+
+const project = projects[0];
 ---
+<BaseLayout title="Projects — espr.ai" description="Fronts and Spread Anomaly." current="projects">
+  <ProjectsDashboard project={project} />
+</BaseLayout>
